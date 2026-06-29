@@ -157,7 +157,7 @@ public class MySQL {
         }
 
         lastConnectionErrorLog = now;
-        System.err.println("[ProxyBanSystem] MySQL-Verbindung konnte nicht hergestellt werden: " + e.getMessage());
+        System.err.println("[ProxyBanSystem] Could not establish MySQL connection: " + e.getMessage());
     }
 
     // =========================

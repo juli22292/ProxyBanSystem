@@ -1,8 +1,8 @@
 settings:
-  prefix: "&8[&c&lBANSYSTEM&r&8] &8» "
+  prefix: "&8[&c&lBANSYSTEM&r&8] &8> "
   ban-title: "&8[&c&lBANSYSTEM&r&8]"
-  ban-broadcast-prefix: "&c&lBAN &8» "
-  unban-broadcast-prefix: "&a&lUNBAN &8» "
+  ban-broadcast-prefix: "&c&lBAN &8> "
+  unban-broadcast-prefix: "&a&lUNBAN &8> "
 
 mysql:
   host: localhost

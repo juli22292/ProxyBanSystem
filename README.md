@@ -30,6 +30,7 @@ Waterfall uses the BungeeCord loader. Spigot, Paper, Folia, and Leaf use the Buk
 - Fallback ban reason for unknown/custom reasons
 - Customizable ban screen through `messages.yml`
 - Customizable plugin messages and formats
+- Built-in language switch with English as the default and German as an optional preset
 - Ban and unban broadcasts for staff members
 - Lookup system for ban status, UUID, ban count, unban count, reasons, executors, and history
 - Remove single ban reasons from a player's lookup history
@@ -90,6 +91,7 @@ Contains technical settings:
 
 Contains all user-facing and gameplay settings:
 
+- Active language selection
 - Command names
 - Subcommand names
 - Messages
@@ -99,6 +101,20 @@ Contains all user-facing and gameplay settings:
 - Duration labels
 - Ban reasons
 - Whitelist
+
+Language is selected at the top of `messages.yml`:
+
+```yaml
+settings:
+  language: "en"
+```
+
+Available built-in values:
+
+- `en` for English
+- `de` for German
+
+English is the default. The language presets are stored under the `languages:` section, so server owners can edit both English and German text in one file.
 
 ### `bannedplayers.json`
 

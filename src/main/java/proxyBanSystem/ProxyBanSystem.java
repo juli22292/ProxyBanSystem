@@ -60,6 +60,7 @@ public class ProxyBanSystem {
     );
 
     private static final List<String> MESSAGE_SETTING_KEYS = List.of(
+            "language",
             "timezone",
             "date-format",
             "history-date-format",
@@ -84,15 +85,25 @@ public class ProxyBanSystem {
             "duration",
             "default-ban-reason",
             "ban-reasons",
-            "whitelist"
+            "whitelist",
+            "languages"
+    );
+
+    private static final List<String> LOCALIZED_MESSAGE_KEYS = List.of(
+            "settings",
+            "messages",
+            "formats",
+            "duration",
+            "default-ban-reason",
+            "ban-reasons"
     );
 
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public static String PREFIX = "&8[&c&lBANSYSTEM&r&8] &8» ";
+    public static String PREFIX = "&8[&c&lBANSYSTEM&r&8] &8> ";
     public static String BAN_TITLE = "&8[&c&lBANSYSTEM&r&8]";
-    public static String BAN_BROADCAST_PREFIX = "&c&lBAN &8» ";
-    public static String UNBAN_BROADCAST_PREFIX = "&a&lUNBAN &8» ";
+    public static String BAN_BROADCAST_PREFIX = "&c&lBAN &8> ";
+    public static String UNBAN_BROADCAST_PREFIX = "&a&lUNBAN &8> ";
 
     public static class Config {
         static String host = "localhost";
@@ -118,30 +129,31 @@ public class ProxyBanSystem {
         static String punishmentRemoveSubCommand = "remove";
         static String punishmentWhitelistArgument = "whitelist";
 
+        static String language = "en";
         static String timezone = "Europe/Berlin";
         static String dateFormat = "dd.MM.yyyy HH:mm:ss";
         static String historyDateFormat = "dd-MM-yyyy HH:mm:ss";
         static String line = "&8&m----------------------------------------";
         static String listSeparator = ", ";
         static String consoleName = "Console";
-        static String unknown = "Unbekannt";
-        static String none = "Keine Einträge";
+        static String unknown = "Unknown";
+        static String none = "No entries";
         static String permanent = "Permanent";
-        static String notBanned = "Nicht gebannt";
-        static String zeroDuration = "0 Minuten";
-        static String reasonSuggestionFallback = "Grund";
+        static String notBanned = "Not banned";
+        static String zeroDuration = "0 minutes";
+        static String reasonSuggestionFallback = "Reason";
         static String playerHistoryReasonFormat = "{executor} &8(&c{reason}&8)";
-        static String banMessageBodyMarker = "&7Du wurdest";
-        static String discordLink = "deinserver";
+        static String banMessageBodyMarker = "&7You have been";
+        static String discordLink = "yourserver";
 
-        static String daySingular = "Tag";
-        static String dayPlural = "Tage";
-        static String hourSingular = "Stunde";
-        static String hourPlural = "Stunden";
-        static String minuteSingular = "Minute";
-        static String minutePlural = "Minuten";
+        static String daySingular = "day";
+        static String dayPlural = "days";
+        static String hourSingular = "hour";
+        static String hourPlural = "hours";
+        static String minuteSingular = "minute";
+        static String minutePlural = "minutes";
 
-        static String defaultReasonDisplay = "&7{input} &8(unspezifisch)";
+        static String defaultReasonDisplay = "&7{input} &8(custom)";
         static String defaultReasonDuration = "1d";
     }
 
@@ -234,13 +246,13 @@ public class ProxyBanSystem {
         instance.loadConfig();
 
         adapter.info("=================================");
-        adapter.info(" ProxyBanSystem wird gestartet...");
+        adapter.info(" Starting ProxyBanSystem...");
         adapter.info("=================================");
 
         instance.loadBannedPlayers();
 
-        adapter.info("[1/3] Konfiguration geladen (OK)");
-        adapter.info("[2/3] bannedplayers.json geladen (OK)");
+        adapter.info("[1/3] Configuration loaded (OK)");
+        adapter.info("[2/3] bannedplayers.json loaded (OK)");
 
         mysql = new MySQL(
                 Config.host,
@@ -255,16 +267,16 @@ public class ProxyBanSystem {
             mysql.connect();
 
             if (mysql.isConnected()) {
-                adapter.info("[3/3] MySQL Verbindung erfolgreich (OK)");
+                adapter.info("[3/3] MySQL connection successful (OK)");
             } else {
-                adapter.error("[3/3] MySQL Verbindung fehlgeschlagen (Connection null oder geschlossen)");
+                adapter.error("[3/3] MySQL connection failed (connection is null or closed)");
             }
         } catch (Exception e) {
-            adapter.error("[3/3] MySQL Verbindung fehlgeschlagen", e);
+            adapter.error("[3/3] MySQL connection failed", e);
         }
 
         instance.registerCommands();
-        adapter.info("ProxyBanSystem gestartet");
+        adapter.info("ProxyBanSystem started");
     }
 
     private void registerCommands() {
@@ -782,7 +794,15 @@ public class ProxyBanSystem {
         BAN_BROADCAST_PREFIX = getString(settings, "ban-broadcast-prefix", BAN_BROADCAST_PREFIX);
         UNBAN_BROADCAST_PREFIX = getString(settings, "unban-broadcast-prefix", UNBAN_BROADCAST_PREFIX);
 
-        Map<String, Object> messageSettings = mergedSection(messagesData, messagesDefaults, "settings");
+        Map<String, Object> baseMessageSettings = mergedSection(messagesData, messagesDefaults, "settings");
+        Config.language = normalizeLanguage(getString(baseMessageSettings, "language", Config.language));
+
+        Map<String, Object> localizedMessagesData = applyLanguage(messagesData, Config.language);
+        Map<String, Object> localizedMessagesDefaults = applyLanguage(messagesDefaults, Config.language);
+        Map<String, Object> messageSettings =
+                mergedSection(localizedMessagesData, localizedMessagesDefaults, "settings");
+
+        Config.language = normalizeLanguage(getString(messageSettings, "language", Config.language));
 
         Config.timezone = getString(messageSettings, "timezone", Config.timezone);
         Config.dateFormat = getString(messageSettings, "date-format", Config.dateFormat);
@@ -826,7 +846,7 @@ public class ProxyBanSystem {
         Config.punishmentWhitelistArgument =
                 getString(commands, "punishment-whitelist", Config.punishmentWhitelistArgument);
 
-        Map<String, Object> duration = mergedSection(messagesData, messagesDefaults, "duration");
+        Map<String, Object> duration = mergedSection(localizedMessagesData, localizedMessagesDefaults, "duration");
         Config.daySingular = getString(duration, "day-singular", Config.daySingular);
         Config.dayPlural = getString(duration, "day-plural", Config.dayPlural);
         Config.hourSingular = getString(duration, "hour-singular", Config.hourSingular);
@@ -834,13 +854,14 @@ public class ProxyBanSystem {
         Config.minuteSingular = getString(duration, "minute-singular", Config.minuteSingular);
         Config.minutePlural = getString(duration, "minute-plural", Config.minutePlural);
 
-        Map<String, Object> defaultReason = mergedSection(messagesData, messagesDefaults, "default-ban-reason");
+        Map<String, Object> defaultReason =
+                mergedSection(localizedMessagesData, localizedMessagesDefaults, "default-ban-reason");
         Config.defaultReasonDisplay = getString(defaultReason, "display", Config.defaultReasonDisplay);
         Config.defaultReasonDuration = getString(defaultReason, "duration", Config.defaultReasonDuration);
 
-        loadStringSection(MESSAGES, mergedSection(messagesData, messagesDefaults, "messages"));
-        loadFormatSection(mergedSection(messagesData, messagesDefaults, "formats"));
-        loadBanReasons(configuredSection(messagesData, messagesDefaults, "ban-reasons"));
+        loadStringSection(MESSAGES, mergedSection(localizedMessagesData, localizedMessagesDefaults, "messages"));
+        loadFormatSection(mergedSection(localizedMessagesData, localizedMessagesDefaults, "formats"));
+        loadBanReasons(configuredSection(localizedMessagesData, localizedMessagesDefaults, "ban-reasons"));
         loadWhitelist(configuredObject(messagesData, messagesDefaults, "whitelist"));
 
         Map<String, Object> mysqlMap = mergedSection(configData, configDefaults, "mysql");
@@ -851,6 +872,50 @@ public class ProxyBanSystem {
         Config.user = getString(mysqlMap, "user", Config.user);
         Config.password = getString(mysqlMap, "password", Config.password);
         Config.jdbcParameters = getString(mysqlMap, "jdbc-parameters", Config.jdbcParameters);
+    }
+
+    private Map<String, Object> applyLanguage(Map<String, Object> source, String language) {
+        Map<String, Object> result = new LinkedHashMap<>(source);
+        Map<String, Object> languages = asMap(source.get("languages"));
+        Map<String, Object> selectedLanguage = asMap(languages.get(language));
+
+        if (selectedLanguage.isEmpty() && !"en".equals(language)) {
+            selectedLanguage = asMap(languages.get("en"));
+        }
+
+        if (selectedLanguage.isEmpty()) {
+            return result;
+        }
+
+        for (String key : LOCALIZED_MESSAGE_KEYS) {
+            if (!selectedLanguage.containsKey(key)) {
+                continue;
+            }
+
+            Object selectedValue = selectedLanguage.get(key);
+            Object baseValue = result.get(key);
+
+            if (selectedValue instanceof Map<?, ?> && baseValue instanceof Map<?, ?>) {
+                result.put(key, deepMerge(asMap(baseValue), asMap(selectedValue)));
+            } else {
+                result.put(key, selectedValue);
+            }
+        }
+
+        return result;
+    }
+
+    private String normalizeLanguage(String language) {
+        if (language == null) {
+            return "en";
+        }
+
+        String value = language.trim().toLowerCase(Locale.ROOT);
+        if (value.equals("de") || value.equals("de_de") || value.equals("german") || value.equals("deutsch")) {
+            return "de";
+        }
+
+        return "en";
     }
 
     private void loadStringSection(Map<String, String> target, Map<String, Object> source) {
@@ -1203,7 +1268,6 @@ public class ProxyBanSystem {
     private void removeDeprecatedMessageKeys(Map<String, Object> config) {
         Map<String, Object> messages = asMap(config.get("messages"));
         Map<String, Object> settings = asMap(config.get("settings"));
-        Map<String, Object> formats = asMap(config.get("formats"));
         Map<String, Object> banReasons = asMap(config.get("ban-reasons"));
 
         if (!settings.isEmpty()) {
@@ -1212,36 +1276,6 @@ public class ProxyBanSystem {
                 settings.put("discord-link", discordLink.substring("https://discord.gg/".length()));
             } else if (discordLink.startsWith("discord.gg/")) {
                 settings.put("discord-link", discordLink.substring("discord.gg/".length()));
-            }
-        }
-
-        if (!formats.isEmpty()) {
-            if ("{ban_broadcast_prefix}&c{player} &8v. &c{executor}"
-                    .equals(String.valueOf(formats.get("ban-broadcast")))) {
-
-                formats.put(
-                        "ban-broadcast",
-                        "&c&lBAN&r &8» &a{gebannter_spieler} &8v. &a{banausführer} &8(&c{bangrund}&8)"
-                );
-            }
-
-            Object banMessage = formats.get("ban-message");
-            if (banMessage instanceof List<?> lines &&
-                    lines.stream().map(String::valueOf).anyMatch(line -> line.contains("Du wurdest von"))) {
-
-                formats.put(
-                        "ban-message",
-                        List.of(
-                                "{prefix}",
-                                "",
-                                "&7Grund&8:&r {grund} &8» {zeit}",
-                                "",
-                                "&7Verbleibend&8:&r {verbleibend}",
-                                "&7Gebannt bis&8:&r {bis}",
-                                "",
-                                "&9Discord&8:&r &adiscord.gg/{discord_link}"
-                        )
-                );
             }
         }
 
@@ -1256,7 +1290,7 @@ public class ProxyBanSystem {
         if (!teamReason.isEmpty() &&
                 "&cTeaminghintergehung".equals(String.valueOf(teamReason.get("display")))) {
 
-            teamReason.put("display", "&cTeamhintergehung");
+            teamReason.put("display", "&cTeam abuse");
         }
 
         if (messages.isEmpty()) {
@@ -1273,12 +1307,10 @@ public class ProxyBanSystem {
         messages.remove("log-started");
         messages.remove("mysql-connection-error");
 
-        if ("{prefix}&a/{punishment_command} &8<&alistallbans/reload/add/remove&8> <&awhitelist&8> <&aSpieler&8>"
-                .equals(String.valueOf(messages.get("punishment-usage")))) {
-
+        if (String.valueOf(messages.get("punishment-usage")).contains("add/remove")) {
             messages.put(
                     "punishment-usage",
-                    "{prefix}&a/{punishment_command} &8<&alistallbans/reload/whitelist&8> <&aadd/remove&8> <&aSpieler&8>"
+                    "{prefix}&a/{punishment_command} &8<&alistallbans/reload/whitelist&8> <&aadd/remove&8> <&aplayer&8>"
             );
         }
     }
@@ -1448,10 +1480,10 @@ public class ProxyBanSystem {
 
     private String fallbackConfigText() {
         return "settings:\n" +
-                "  prefix: \"&8[&c&lBANSYSTEM&r&8] &8» \"\n" +
+                "  prefix: \"&8[&c&lBANSYSTEM&r&8] &8> \"\n" +
                 "  ban-title: \"&8[&c&lBANSYSTEM&r&8]\"\n" +
-                "  ban-broadcast-prefix: \"&c&lBAN &8» \"\n" +
-                "  unban-broadcast-prefix: \"&a&lUNBAN &8» \"\n" +
+                "  ban-broadcast-prefix: \"&c&lBAN &8> \"\n" +
+                "  unban-broadcast-prefix: \"&a&lUNBAN &8> \"\n" +
                 "mysql:\n" +
                 "  host: localhost\n" +
                 "  port: 3306\n" +
@@ -1463,36 +1495,38 @@ public class ProxyBanSystem {
 
     private String fallbackMessagesText() {
         return "settings:\n" +
+                "  language: \"en\"\n" +
                 "  timezone: \"Europe/Berlin\"\n" +
                 "  date-format: \"dd.MM.yyyy HH:mm:ss\"\n" +
                 "  history-date-format: \"dd-MM-yyyy HH:mm:ss\"\n" +
                 "  line: \"&8&m----------------------------------------\"\n" +
                 "  list-separator: \", \"\n" +
                 "  console-name: \"Console\"\n" +
-                "  unknown: \"Unbekannt\"\n" +
-                "  none: \"Keine Einträge\"\n" +
+                "  unknown: \"Unknown\"\n" +
+                "  none: \"No entries\"\n" +
                 "  permanent: \"Permanent\"\n" +
-                "  not-banned: \"Nicht gebannt\"\n" +
-                "  zero-duration: \"0 Minuten\"\n" +
-                "  reason-suggestion-fallback: \"Grund\"\n" +
+                "  not-banned: \"Not banned\"\n" +
+                "  zero-duration: \"0 minutes\"\n" +
+                "  reason-suggestion-fallback: \"Reason\"\n" +
                 "  player-history-reason-format: \"{executor} &8(&c{reason}&8)\"\n" +
-                "  ban-message-body-marker: \"&7Du wurdest\"\n" +
-                "  discord-link: \"deinserver\"\n" +
+                "  ban-message-body-marker: \"&7You have been\"\n" +
+                "  discord-link: \"yourserver\"\n" +
                 "commands: {}\n" +
                 "messages: {}\n" +
                 "formats: {}\n" +
                 "duration:\n" +
-                "  day-singular: \"Tag\"\n" +
-                "  day-plural: \"Tage\"\n" +
-                "  hour-singular: \"Stunde\"\n" +
-                "  hour-plural: \"Stunden\"\n" +
-                "  minute-singular: \"Minute\"\n" +
-                "  minute-plural: \"Minuten\"\n" +
+                "  day-singular: \"day\"\n" +
+                "  day-plural: \"days\"\n" +
+                "  hour-singular: \"hour\"\n" +
+                "  hour-plural: \"hours\"\n" +
+                "  minute-singular: \"minute\"\n" +
+                "  minute-plural: \"minutes\"\n" +
                 "default-ban-reason:\n" +
                 "  display: \"{input}\"\n" +
                 "  duration: \"1d\"\n" +
                 "ban-reasons: {}\n" +
-                "whitelist: []\n";
+                "whitelist: []\n" +
+                "languages: {}\n";
     }
 
     public void loadBannedPlayers() {

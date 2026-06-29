@@ -54,7 +54,7 @@ public class BukkitAdapter implements ProxyAdapter {
 
         PluginCommand pluginCommand = plugin.getCommand(name);
         if (pluginCommand == null) {
-            error("Command /" + name + " konnte nicht registriert werden");
+            error("Command /" + name + " could not be registered");
             return;
         }
 
@@ -84,7 +84,7 @@ public class BukkitAdapter implements ProxyAdapter {
                 return map;
             }
         } catch (Exception e) {
-            error("Bukkit CommandMap konnte nicht aufgeloest werden", e);
+            error("Could not resolve Bukkit CommandMap", e);
         }
 
         return null;

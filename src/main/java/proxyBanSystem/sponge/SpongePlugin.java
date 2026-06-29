@@ -26,7 +26,7 @@ public class SpongePlugin {
 
         PluginContainer container = Sponge.pluginManager()
                 .fromInstance(this)
-                .orElseThrow(() -> new IllegalStateException("PluginContainer nicht gefunden"));
+                .orElseThrow(() -> new IllegalStateException("PluginContainer not found"));
         File dataDirectory = Sponge.configManager()
                 .pluginConfig(container)
                 .directory()
