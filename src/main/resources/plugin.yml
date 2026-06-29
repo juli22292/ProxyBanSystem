@@ -1,0 +1,11 @@
+name: ProxyBanSystem
+main: proxyBanSystem.bukkit.BukkitPlugin
+version: 4.2
+author: Julian1657
+api-version: '1.21'
+folia-supported: true
+permissions:
+  punishsystem.admin.use:
+    default: op
+  punishsystem.admin.seebans:
+    default: op

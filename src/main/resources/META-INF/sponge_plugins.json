@@ -1,0 +1,29 @@
+{
+  "loader": {
+    "name": "java_plain",
+    "version": "1.0"
+  },
+  "license": "All Rights Reserved",
+  "global": {
+    "version": "4.2.0",
+    "contributors": [
+      {
+        "name": "Julian1657",
+        "description": "Developer"
+      }
+    ],
+    "dependencies": [
+      {
+        "id": "spongeapi",
+        "version": "14.0.0"
+      }
+    ]
+  },
+  "plugins": [
+    {
+      "id": "proxybansystem",
+      "name": "ProxyBanSystem",
+      "entrypoint": "proxyBanSystem.sponge.SpongePlugin"
+    }
+  ]
+}

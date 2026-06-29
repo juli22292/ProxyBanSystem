@@ -1,0 +1,7 @@
+{
+  "id": "proxybansystem",
+  "name": "ProxyBanSystem",
+  "version": "4.2",
+  "main": "proxyBanSystem.velocity.VelocityPlugin",
+  "authors": ["Julian1657"]
+}

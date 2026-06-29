@@ -1,0 +1,4 @@
+name: ProxyBanSystem
+main: proxyBanSystem.bungee.BungeePlugin
+version: 4.2
+author: Julian1657
