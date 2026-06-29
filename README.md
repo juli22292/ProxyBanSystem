@@ -1,5 +1,7 @@
 # ProxyBanSystem
 
+Source-Code for Ultimate Ban System FREE
+
 Dieselbe gebaute JAR kann auf Velocity, BungeeCord, Waterfall, Spigot, Paper, Folia, Leaf und Sponge eingesetzt werden.
 
 Hinweise:
