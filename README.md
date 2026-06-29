@@ -1,12 +1,12 @@
 # ProxyBanSystem
 
-Source-Code for Ultimate Ban System FREE.
+Source code for the Ultimate Ban System FREE.
 
-ProxyBanSystem ist ein plattformübergreifendes Ban- und Punishment-System für Minecraft-Netzwerke. Die gleiche gebaute JAR kann auf Proxy- und Server-Plattformen genutzt werden und verwendet eine gemeinsame MySQL-Datenbank, damit Bans, Lookup-Daten und registrierte Spielernamen zentral gespeichert werden.
+ProxyBanSystem is a cross-platform ban and punishment plugin for Minecraft networks. The same built JAR can run on proxy platforms and server platforms, while all active bans, lookup data, and registered player names are stored in one shared MySQL database.
 
-## Kompatibilität
+## Compatibility
 
-Eine JAR ist für diese Plattformen gedacht:
+One JAR is designed to run on:
 
 - Velocity
 - BungeeCord
@@ -17,123 +17,124 @@ Eine JAR ist für diese Plattformen gedacht:
 - Leaf
 - Sponge
 
-Waterfall nutzt den BungeeCord-Loader. Spigot, Paper, Folia und Leaf nutzen den Bukkit/Spigot-Loader. Folia wird über `folia-supported: true` in der `plugin.yml` markiert.
+Waterfall uses the BungeeCord loader. Spigot, Paper, Folia, and Leaf use the Bukkit/Spigot loader. Folia support is marked with `folia-supported: true` in `plugin.yml`.
 
-## Funktionen
+## Features
 
-- Spieler per Name oder UUID bannen
-- Spieler per Name oder UUID entbannen
-- Automatischer Login-Check: gebannte Spieler werden beim Join abgelehnt
-- Automatischer Kick eines online gebannten Spielers
-- Permanente und zeitlich begrenzte Bans
-- Frei konfigurierbare Ban-Gründe mit eigener Dauer
-- Fallback-Ban-Grund für nicht vordefinierte Gründe
-- Ban-Screen und Nachrichten vollständig über `messages.yml` anpassbar
-- Ban- und Unban-Broadcasts für Teammitglieder mit Berechtigung
-- Lookup-System für Ban-Status, UUID, Ban-Anzahl, Entban-Anzahl, Gründe und Verlauf
-- Einzelne Ban-Gründe aus dem Lookup-Verlauf entfernen
-- Kompletten Lookup-Verlauf eines Spielers entfernen
-- Aktive Bans auflisten
-- Whitelist für Spieler, die nicht gebannt werden können
-- Spieler-Registry in MySQL für Offline-Lookups und Tab-Complete
-- Lokale `bannedplayers.json` als zusätzliche gespeicherte Verlauf-/Anzeige-Datei
-- Reload-Befehle für Config und Messages
-- Tab-Complete für Spieler, Ban-Gründe und Verwaltungsbefehle
-- Eine gemeinsame Core-Logik für alle unterstützten Plattformen
+- Ban players by name or UUID
+- Unban players by name or UUID
+- Automatic login check for banned players
+- Automatic kick when an online player gets banned
+- Temporary and permanent bans
+- Fully configurable ban reasons with custom durations
+- Fallback ban reason for unknown/custom reasons
+- Customizable ban screen through `messages.yml`
+- Customizable plugin messages and formats
+- Ban and unban broadcasts for staff members
+- Lookup system for ban status, UUID, ban count, unban count, reasons, executors, and history
+- Remove single ban reasons from a player's lookup history
+- Remove the full lookup history of a player
+- List all active bans
+- Whitelist players so they cannot be banned
+- MySQL player registry for offline lookups and tab completion
+- Local `bannedplayers.json` for additional stored history/display data
+- Reload commands for config and messages
+- Tab completion for players, ban reasons, and admin subcommands
+- Shared core logic for all supported platforms
 
 ## Installation
 
-1. Projekt bauen:
+1. Build the project:
 
 ```powershell
 mvn clean package
 ```
 
-2. Die fertige JAR aus `target/proxybansystem-4.2.jar` in den passenden Plugin-Ordner legen:
+2. Put `target/proxybansystem-4.2.jar` into the correct plugin folder:
 
-- Velocity: Proxy-`plugins`-Ordner
-- BungeeCord/Waterfall: Proxy-`plugins`-Ordner
-- Spigot/Paper/Folia/Leaf: Server-`plugins`-Ordner
-- Sponge: Sponge-`plugins`-Ordner
+- Velocity: proxy `plugins` folder
+- BungeeCord/Waterfall: proxy `plugins` folder
+- Spigot/Paper/Folia/Leaf: server `plugins` folder
+- Sponge: Sponge `plugins` folder
 
-3. Server oder Proxy einmal starten, damit die Dateien erstellt werden.
+3. Start the server or proxy once to generate the files.
 
-4. In `config.yml` die MySQL-Zugangsdaten eintragen.
+4. Open `config.yml` and enter your MySQL connection data.
 
-5. Server oder Proxy neu starten oder `/adminpunish reload` nutzen.
+5. Restart the server/proxy or run `/adminpunish reload`.
 
-## Voraussetzungen
+## Requirements
 
 - Java 21
-- Maven zum Bauen
-- MySQL-Datenbank
-- Ein Server/Proxy auf einer der unterstützten Plattformen
+- Maven for building from source
+- MySQL database
+- A server or proxy running one of the supported platforms
 
-Die Tabellen werden automatisch erstellt, wenn die MySQL-Verbindung funktioniert:
+The plugin automatically creates these MySQL tables when the connection works:
 
 - `bans`
 - `punishment_history`
 - `player_registry`
 
-## Dateien
+## Files
 
 ### `config.yml`
 
-Enthält technische Einstellungen:
+Contains technical settings:
 
-- Prefix und Titel
-- Ban-/Unban-Broadcast-Prefix
-- MySQL-Host, Port, Datenbank, Benutzer, Passwort und JDBC-Parameter
+- Prefix and ban title
+- Ban/unban broadcast prefixes
+- MySQL host, port, database, user, password, and JDBC parameters
 
 ### `messages.yml`
 
-Enthält alles, was im Spiel angezeigt oder genutzt wird:
+Contains all user-facing and gameplay settings:
 
-- Command-Namen
-- Unterbefehle
-- Nachrichten
-- Lookup-Formate
-- Ban-Screen
-- Broadcast-Formate
-- Zeitformatierung
-- Ban-Gründe
+- Command names
+- Subcommand names
+- Messages
+- Lookup formats
+- Ban screen format
+- Broadcast formats
+- Duration labels
+- Ban reasons
 - Whitelist
 
 ### `bannedplayers.json`
 
-Speichert zusätzliche Ban-Verlaufsdaten lokal im Plugin-Datenordner. Die aktiven Bans liegen weiterhin in MySQL.
+Stores additional local ban history/display data in the plugin data folder. Active bans are still stored in MySQL.
 
 ## Commands
 
-Die Command-Namen sind in `messages.yml` konfigurierbar. Standardmäßig heißen sie:
+Command names can be changed in `messages.yml`. These are the default commands:
 
-| Command | Nutzung | Beschreibung |
+| Command | Usage | Description |
 | --- | --- | --- |
-| `/punish <Spieler/UUID> <Grund>` | Bannt einen Spieler | Nutzt einen konfigurierten Ban-Grund oder den Fallback-Grund |
-| `/unpunish <Spieler/UUID>` | Entbannt einen Spieler | Entfernt den aktiven Ban aus MySQL |
-| `/lookup <Spieler/UUID>` | Zeigt Ban-Infos | Status, Ban-Anzahl, Gründe, Banner, Entbanns und Zeiten |
-| `/lookupremove <Spieler/UUID>` | Listet gespeicherte Ban-Gründe | Zeigt nummerierte Gründe zum Entfernen |
-| `/lookupremove <Spieler/UUID> <Nummer/Grund>` | Entfernt einen einzelnen Ban-Grund | Aktualisiert Verlauf und aktiven Grund, falls nötig |
-| `/lookupfullremove <Spieler/UUID>` | Löscht den kompletten Lookup-Verlauf | Entfernt alle History-Einträge des Spielers |
-| `/punishment listallbans` | Listet aktive Bans | Zeigt alle aktuell gebannten Spieler aus MySQL |
-| `/punishment reload` | Lädt Config neu | Lädt `config.yml` und `messages.yml` neu |
-| `/punishment whitelist add <Spieler>` | Fügt Whitelist-Eintrag hinzu | Spieler kann danach nicht mehr gebannt werden |
-| `/punishment whitelist remove <Spieler>` | Entfernt Whitelist-Eintrag | Spieler kann danach wieder gebannt werden |
-| `/adminpunish help` | Zeigt Hilfe | Zeigt Admin-Hilfe aus `messages.yml` |
-| `/adminpunish reload` | Lädt Config neu | Lädt `config.yml` und `messages.yml` neu |
+| `/punish <player/uuid> <reason>` | Ban a player | Uses a configured ban reason or the fallback reason |
+| `/unpunish <player/uuid>` | Unban a player | Removes the active ban from MySQL |
+| `/lookup <player/uuid>` | Show ban information | Shows status, counts, reasons, executors, unbans, and dates |
+| `/lookupremove <player/uuid>` | List stored ban reasons | Shows numbered reasons that can be removed |
+| `/lookupremove <player/uuid> <number/reason>` | Remove one stored ban reason | Updates history and the active reason if needed |
+| `/lookupfullremove <player/uuid>` | Delete full lookup history | Removes all punishment history entries for the player |
+| `/punishment listallbans` | List active bans | Shows all currently banned players from MySQL |
+| `/punishment reload` | Reload config | Reloads `config.yml` and `messages.yml` |
+| `/punishment whitelist add <player>` | Add whitelist entry | The player can no longer be banned |
+| `/punishment whitelist remove <player>` | Remove whitelist entry | The player can be banned again |
+| `/adminpunish help` | Show help | Shows the admin help from `messages.yml` |
+| `/adminpunish reload` | Reload config | Reloads `config.yml` and `messages.yml` |
 
-## Berechtigungen
+## Permissions
 
-| Permission | Zweck |
+| Permission | Description |
 | --- | --- |
-| `punishsystem.admin.use` | Erlaubt Nutzung der Admin-, Ban-, Unban-, Lookup- und Verwaltungsbefehle |
-| `punishsystem.admin.seebans` | Empfängt Ban- und Unban-Broadcasts |
+| `punishsystem.admin.use` | Allows use of admin, ban, unban, lookup, and management commands |
+| `punishsystem.admin.seebans` | Receives ban and unban broadcasts |
 
-Konsole darf die Verwaltungsbefehle ohne Spieler-Permission ausführen.
+The console can run management commands without player permissions.
 
-## Ban-Gründe und Zeiten
+## Ban Reasons And Durations
 
-Ban-Gründe werden in `messages.yml` unter `ban-reasons` konfiguriert:
+Ban reasons are configured in `messages.yml` under `ban-reasons`:
 
 ```yaml
 ban-reasons:
@@ -145,27 +146,27 @@ ban-reasons:
     duration: "permanent"
 ```
 
-Unterstützte Zeitwerte:
+Supported duration values:
 
-- `ms` für Millisekunden
-- `s` für Sekunden
-- `m` für Minuten
-- `h` für Stunden
-- `d` für Tage
-- `permanent`, `perm`, `dauerhaft` oder `-1` für permanente Bans
+- `ms` for milliseconds
+- `s` for seconds
+- `m` for minutes
+- `h` for hours
+- `d` for days
+- `permanent`, `perm`, `dauerhaft`, or `-1` for permanent bans
 
-Beispiele:
+Examples:
 
 - `15m`
 - `2h`
 - `7d`
 - `permanent`
 
-Wenn ein Grund nicht in `ban-reasons` existiert, wird `default-ban-reason` genutzt.
+If a reason does not exist in `ban-reasons`, `default-ban-reason` is used.
 
 ## Whitelist
 
-Spieler auf der Whitelist können nicht gebannt werden. Einträge können Namen oder UUIDs sein.
+Whitelisted players cannot be banned. Entries can be names or UUIDs.
 
 In `messages.yml`:
 
@@ -174,20 +175,20 @@ whitelist:
   - Julian1657
 ```
 
-Per Command:
+With commands:
 
 ```text
-/punishment whitelist add <Spieler>
-/punishment whitelist remove <Spieler>
+/punishment whitelist add <player>
+/punishment whitelist remove <player>
 ```
 
-## Plattform-Hinweise
+## Platform Notes
 
-- Auf Velocity, BungeeCord und Waterfall arbeitet das Plugin als Proxy-Plugin.
-- Auf Spigot, Paper, Folia und Leaf arbeitet es als Server-Plugin.
-- Auf Sponge arbeitet es als Sponge-Plugin mit eigener Sponge-Metadata.
-- Für netzwerkweite Bans sollte dieselbe MySQL-Datenbank auf allen Instanzen genutzt werden.
-- Wenn das Plugin auf mehreren Servern/Proxys gleichzeitig läuft, greifen alle auf dieselben MySQL-Bans zu.
+- On Velocity, BungeeCord, and Waterfall, the plugin runs as a proxy plugin.
+- On Spigot, Paper, Folia, and Leaf, the plugin runs as a server plugin.
+- On Sponge, the plugin runs as a Sponge plugin with Sponge metadata.
+- For network-wide bans, use the same MySQL database on all instances.
+- If the plugin runs on multiple servers/proxies at the same time, all instances read and write the same MySQL bans.
 
 ## Build
 
@@ -195,13 +196,13 @@ Per Command:
 mvn clean package
 ```
 
-Ausgabe:
+Output:
 
 ```text
 target/proxybansystem-4.2.jar
 ```
 
-Die JAR enthält die Loader-Dateien für alle unterstützten Plattformen:
+The JAR contains loader files for all supported platforms:
 
 - `velocity-plugin.json`
 - `bungee.yml`
