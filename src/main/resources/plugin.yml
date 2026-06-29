@@ -1,10 +1,10 @@
 name: ProxyBanSystem
 main: proxyBanSystem.bukkit.BukkitPlugin
-version: 4.2
+version: 4.3
 author: Julian1657
 description: Cross-platform MySQL ban and punishment system with English and German language presets.
 website: https://github.com/juli22292/ProxyBanSystem
-api-version: '1.21'
+api-version: '1.20'
 folia-supported: true
 permissions:
   punishsystem.admin.use:

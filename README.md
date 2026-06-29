@@ -17,7 +17,19 @@ One JAR is designed to run on:
 - Leaf
 - Sponge
 
-Waterfall uses the BungeeCord loader. Spigot, Paper, Folia, and Leaf use the Bukkit/Spigot loader. Folia support is marked with `folia-supported: true` in `plugin.yml`.
+Waterfall uses the BungeeCord loader. Spigot, Paper, Folia, Leaf, and Bukkit-compatible forks use the Bukkit/Spigot loader. Folia support is marked with `folia-supported: true` in `plugin.yml`.
+
+### Supported Minecraft Versions
+
+For non-proxy Bukkit-based servers, the plugin is built for one shared JAR across:
+
+- Minecraft Java `1.20.x`
+- Minecraft Java `1.21.x`
+- Minecraft Java `26.1.x`
+
+The Bukkit loader declares `api-version: '1.20'` and the project compiles against Spigot API `1.20.1-R0.1-SNAPSHOT`. This keeps the Bukkit-side API baseline low while still allowing newer Bukkit-compatible platforms such as Paper, Folia, and Leaf to load the same JAR.
+
+Sponge support is provided through SpongeAPI `14.0.0`; use a Sponge server version that matches that API line.
 
 ## Features
 
@@ -51,11 +63,11 @@ Waterfall uses the BungeeCord loader. Spigot, Paper, Folia, and Leaf use the Buk
 mvn clean package
 ```
 
-2. Put `target/proxybansystem-4.2.jar` into the correct plugin folder:
+2. Put `target/proxybansystem-4.3.jar` into the correct plugin folder:
 
 - Velocity: proxy `plugins` folder
 - BungeeCord/Waterfall: proxy `plugins` folder
-- Spigot/Paper/Folia/Leaf: server `plugins` folder
+- Spigot/Paper/Folia/Leaf/Bukkit-compatible forks: server `plugins` folder
 - Sponge: Sponge `plugins` folder
 
 3. Start the server or proxy once to generate the files.
@@ -66,10 +78,12 @@ mvn clean package
 
 ## Requirements
 
-- Java 21
+- Java 17 or newer bytecode support
 - Maven for building from source
 - MySQL database
 - A server or proxy running one of the supported platforms
+
+Use the Java runtime required by your server software. The plugin itself is compiled for Java 17 bytecode so it can also load on older 1.20.x server lines that still run on Java 17, while newer server versions can run it on their newer Java runtime. Minecraft Java 26.1.x servers require Java 25; the plugin can run on that newer runtime because Java runtimes are backward-compatible with Java 17 bytecode.
 
 The plugin automatically creates these MySQL tables when the connection works:
 
@@ -201,7 +215,8 @@ With commands:
 ## Platform Notes
 
 - On Velocity, BungeeCord, and Waterfall, the plugin runs as a proxy plugin.
-- On Spigot, Paper, Folia, and Leaf, the plugin runs as a server plugin.
+- On Spigot, Paper, Folia, Leaf, and Bukkit-compatible forks, the plugin runs as a server plugin.
+- For Bukkit-based non-proxy servers, the supported Minecraft target lines are `1.20.x`, `1.21.x`, and `26.1.x`.
 - On Sponge, the plugin runs as a Sponge plugin with Sponge metadata.
 - For network-wide bans, use the same MySQL database on all instances.
 - If the plugin runs on multiple servers/proxies at the same time, all instances read and write the same MySQL bans.
@@ -215,7 +230,7 @@ mvn clean package
 Output:
 
 ```text
-target/proxybansystem-4.2.jar
+target/proxybansystem-4.3.jar
 ```
 
 The JAR contains loader files for all supported platforms:
