@@ -3,7 +3,7 @@
     "name": "java_plain",
     "version": "1.0"
   },
-  "license": "All Rights Reserved",
+  "license": "MIT",
   "global": {
     "version": "4.2.0",
     "contributors": [
@@ -23,7 +23,12 @@
     {
       "id": "proxybansystem",
       "name": "ProxyBanSystem",
-      "entrypoint": "proxyBanSystem.sponge.SpongePlugin"
+      "entrypoint": "proxyBanSystem.sponge.SpongePlugin",
+      "description": "Cross-platform MySQL ban and punishment system with English and German language presets.",
+      "links": {
+        "homepage": "https://github.com/juli22292/ProxyBanSystem",
+        "source": "https://github.com/juli22292/ProxyBanSystem"
+      }
     }
   ]
 }

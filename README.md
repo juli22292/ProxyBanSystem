@@ -1,6 +1,6 @@
 # ProxyBanSystem
 
-Source code for the Ultimate Ban System FREE.
+Cross-platform MySQL ban and punishment system for Minecraft servers and networks.
 
 ProxyBanSystem is a cross-platform ban and punishment plugin for Minecraft networks. The same built JAR can run on proxy platforms and server platforms, while all active bans, lookup data, and registered player names are stored in one shared MySQL database.
 

@@ -9,6 +9,16 @@
     <artifactId>proxybansystem</artifactId>
     <version>4.2</version>
     <packaging>jar</packaging>
+    <name>ProxyBanSystem</name>
+    <description>Cross-platform MySQL ban and punishment system for Velocity, BungeeCord, Waterfall, Spigot, Paper, Folia, Leaf, and Sponge.</description>
+    <url>https://github.com/juli22292/ProxyBanSystem</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/license/mit</url>
+        </license>
+    </licenses>
 
     <properties>
         <java.version>21</java.version>
