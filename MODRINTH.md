@@ -11,6 +11,7 @@ One JAR supports:
 - Waterfall
 - Spigot
 - Paper
+- Purpur
 - Folia
 - Leaf
 - Bukkit-compatible forks
@@ -22,7 +23,7 @@ Non-proxy Bukkit-based server support:
 - Minecraft Java 1.21.x
 - Minecraft Java 26.1.x
 
-The Bukkit loader uses `api-version: 1.20` and is built against Spigot API 1.20.1 so the same JAR can run on 1.20.x and newer Bukkit-compatible platforms. Sponge support uses SpongeAPI 14.0.0.
+The Bukkit loader uses `api-version: 1.20` and is built against Spigot API 1.20.1 so the same JAR can run on 1.20.x and newer Bukkit-compatible platforms, including Paper, Purpur, Folia, and Leaf. Sponge support uses SpongeAPI 14.0.0.
 
 ## Features
 
@@ -61,7 +62,7 @@ Plugin folders:
 
 - Velocity: proxy `plugins` folder
 - BungeeCord/Waterfall: proxy `plugins` folder
-- Spigot/Paper/Folia/Leaf/Bukkit forks: server `plugins` folder
+- Spigot/Paper/Purpur/Folia/Leaf/Bukkit forks: server `plugins` folder
 - Sponge: Sponge `plugins` folder
 
 ## Commands

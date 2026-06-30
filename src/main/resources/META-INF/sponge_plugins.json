@@ -24,7 +24,7 @@
       "id": "proxybansystem",
       "name": "ProxyBanSystem",
       "entrypoint": "proxyBanSystem.sponge.SpongePlugin",
-      "description": "Cross-platform MySQL ban and punishment system with English and German language presets.",
+      "description": "Cross-platform MySQL ban system for proxy, Bukkit-based, and Sponge server platforms.",
       "links": {
         "homepage": "https://github.com/juli22292/ProxyBanSystem",
         "source": "https://github.com/juli22292/ProxyBanSystem"

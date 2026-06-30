@@ -13,11 +13,12 @@ One JAR is designed to run on:
 - Waterfall
 - Spigot
 - Paper
+- Purpur
 - Folia
 - Leaf
 - Sponge
 
-Waterfall uses the BungeeCord loader. Spigot, Paper, Folia, Leaf, and Bukkit-compatible forks use the Bukkit/Spigot loader. Folia support is marked with `folia-supported: true` in `plugin.yml`.
+Waterfall uses the BungeeCord loader. Spigot, Paper, Purpur, Folia, Leaf, and Bukkit-compatible forks use the Bukkit/Spigot loader. Folia support is marked with `folia-supported: true` in `plugin.yml`.
 
 ### Supported Minecraft Versions
 
@@ -27,7 +28,7 @@ For non-proxy Bukkit-based servers, the plugin is built for one shared JAR acros
 - Minecraft Java `1.21.x`
 - Minecraft Java `26.1.x`
 
-The Bukkit loader declares `api-version: '1.20'` and the project compiles against Spigot API `1.20.1-R0.1-SNAPSHOT`. This keeps the Bukkit-side API baseline low while still allowing newer Bukkit-compatible platforms such as Paper, Folia, and Leaf to load the same JAR.
+The Bukkit loader declares `api-version: '1.20'` and the project compiles against Spigot API `1.20.1-R0.1-SNAPSHOT`. This keeps the Bukkit-side API baseline low while still allowing newer Bukkit-compatible platforms such as Paper, Purpur, Folia, and Leaf to load the same JAR.
 
 Sponge support is provided through SpongeAPI `14.0.0`; use a Sponge server version that matches that API line.
 
@@ -67,7 +68,7 @@ mvn clean package
 
 - Velocity: proxy `plugins` folder
 - BungeeCord/Waterfall: proxy `plugins` folder
-- Spigot/Paper/Folia/Leaf/Bukkit-compatible forks: server `plugins` folder
+- Spigot/Paper/Purpur/Folia/Leaf/Bukkit-compatible forks: server `plugins` folder
 - Sponge: Sponge `plugins` folder
 
 3. Start the server or proxy once to generate the files.
@@ -215,7 +216,7 @@ With commands:
 ## Platform Notes
 
 - On Velocity, BungeeCord, and Waterfall, the plugin runs as a proxy plugin.
-- On Spigot, Paper, Folia, Leaf, and Bukkit-compatible forks, the plugin runs as a server plugin.
+- On Spigot, Paper, Purpur, Folia, Leaf, and Bukkit-compatible forks, the plugin runs as a server plugin.
 - For Bukkit-based non-proxy servers, the supported Minecraft target lines are `1.20.x`, `1.21.x`, and `26.1.x`.
 - On Sponge, the plugin runs as a Sponge plugin with Sponge metadata.
 - For network-wide bans, use the same MySQL database on all instances.

@@ -3,7 +3,7 @@
   "name": "ProxyBanSystem",
   "version": "4.3",
   "main": "proxyBanSystem.velocity.VelocityPlugin",
-  "description": "Cross-platform MySQL ban and punishment system with English and German language presets.",
+  "description": "Cross-platform MySQL ban system for proxy and Bukkit-based server platforms.",
   "url": "https://github.com/juli22292/ProxyBanSystem",
   "authors": ["Julian1657"]
 }

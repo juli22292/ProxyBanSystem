@@ -2,4 +2,4 @@ name: ProxyBanSystem
 main: proxyBanSystem.bungee.BungeePlugin
 version: 4.3
 author: Julian1657
-description: Cross-platform MySQL ban and punishment system with English and German language presets.
+description: Cross-platform MySQL ban system for proxy and Bukkit-based server platforms.

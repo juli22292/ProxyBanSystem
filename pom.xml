@@ -10,7 +10,7 @@
     <version>4.3</version>
     <packaging>jar</packaging>
     <name>ProxyBanSystem</name>
-    <description>Cross-platform MySQL ban and punishment system for Velocity, BungeeCord, Waterfall, Spigot, Paper, Folia, Leaf, and Sponge.</description>
+    <description>Cross-platform MySQL ban and punishment system for Velocity, BungeeCord, Waterfall, Spigot, Paper, Purpur, Folia, Leaf, and Sponge.</description>
     <url>https://github.com/juli22292/ProxyBanSystem</url>
 
     <licenses>
