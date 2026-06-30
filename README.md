@@ -4,6 +4,9 @@ Cross-platform MySQL ban and punishment system for Minecraft servers and network
 
 ProxyBanSystem is a cross-platform ban and punishment plugin for Minecraft networks. The same built JAR can run on proxy platforms and server platforms, while all active bans, lookup data, and registered player names are stored in one shared MySQL database.
 
+**PacketEvents only for Console Errors needed!**
+[PacketEvents](https://modrinth.com/plugin/packetevents)
+
 ## Compatibility
 
 One JAR is designed to run on:
